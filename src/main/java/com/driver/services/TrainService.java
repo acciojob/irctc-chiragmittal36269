@@ -91,7 +91,7 @@ public class TrainService {
         List<Ticket> ticketList = train.getBookedTickets();
         for (Ticket t : ticketList) {
             if (validStation.equals(String.valueOf(t.getFromStation()))) {
-                noOfPeoples++;
+                noOfPeoples += t.getPassengersList().size();
             }
         }
 
@@ -132,7 +132,6 @@ public class TrainService {
             for (String rt : route) {
                 if (rt.equals(String.valueOf(station)) && !train.getDepartureTime().isBefore(startTime) && !train.getDepartureTime().isAfter(endTime)) {
                     trainsBetween.add(train.getTrainId());
-                    break;
                 }
             }
         }
