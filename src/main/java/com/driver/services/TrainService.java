@@ -127,8 +127,9 @@ public class TrainService {
 
         List<Integer> trainsBetween = new ArrayList<>();
         List<Train> trains = trainRepository.findAll();
-        int i = 0;
+
         for(Train train : trains) {
+            int i = 0;
             String[] route = train.getRoute().split(",");
             for (String rt : route) {
                 if (rt.equals(String.valueOf(station))){
