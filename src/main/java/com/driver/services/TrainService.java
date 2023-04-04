@@ -127,12 +127,23 @@ public class TrainService {
 
         List<Integer> trainsBetween = new ArrayList<>();
         List<Train> trains = trainRepository.findAll();
+        int i = 0;
         for(Train train : trains) {
             String[] route = train.getRoute().split(",");
             for (String rt : route) {
-                if (rt.equals(String.valueOf(station)) && !train.getDepartureTime().isBefore(startTime) && !train.getDepartureTime().isAfter(endTime)) {
-                    trainsBetween.add(train.getTrainId());
+                if (rt.equals(String.valueOf(station))){
+                    i++;
+                    int startTimeInMin = (startTime.getHour() * 60) + startTime.getMinute();
+                    int lastTimeInMin = (endTime.getHour() * 60) + endTime.getMinute();
+
+
+                    int departureTimeInMin = (train.getDepartureTime().getHour() * 60) + train.getDepartureTime().getMinute();
+                    int reachingTimeInMin  = departureTimeInMin + (i * 60);
+                    if(reachingTimeInMin>=startTimeInMin && reachingTimeInMin<=lastTimeInMin) {
+                        trainsBetween.add(train.getTrainId());
+                    }
                 }
+                i++;
             }
         }
 
