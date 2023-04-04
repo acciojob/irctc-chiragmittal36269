@@ -132,7 +132,6 @@ public class TrainService {
             String[] route = train.getRoute().split(",");
             for (String rt : route) {
                 if (rt.equals(String.valueOf(station))){
-                    i++;
                     int startTimeInMin = (startTime.getHour() * 60) + startTime.getMinute();
                     int lastTimeInMin = (endTime.getHour() * 60) + endTime.getMinute();
 
