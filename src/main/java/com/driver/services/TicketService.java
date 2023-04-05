@@ -87,9 +87,11 @@ public class TicketService {
         ticket.setTotalFare(numberOfSeatsWantToBook *(end - start) * 300);
         ticket.setTrain(train);
 
+        // object
         Passenger passenger2 = passengerRepository.findById(bookTicketEntryDto.getBookingPersonId()).get();
         passenger2.getBookedTickets().add(ticket);
 
+        // object
         train.getBookedTickets().add(ticket);
         train.setNoOfSeats(train.getNoOfSeats() - numberOfSeatsWantToBook);
 
