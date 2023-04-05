@@ -57,47 +57,39 @@ public class TrainService {
         //Inshort : a train has totalNo of seats and there are tickets from and to different locations
         //We need to find out the available seats between the given 2 stations.
 
-//        Train train = trainRepository.findById(seatAvailabilityEntryDto.getTrainId()).get();
-//        int totalNumberOfSeatsInTrain = train.getNoOfSeats();
-//
-//        int bookedSeats = 0;
-//        List<Ticket> ticketList = train.getBookedTickets();
-//        for(Ticket ticket : ticketList) {
-//            bookedSeats += ticket.getPassengersList().size();
-//        }
-//
-//        int seatsAvailable = totalNumberOfSeatsInTrain - bookedSeats;
-
-
-        int availableSeats;
-
         Train train = trainRepository.findById(seatAvailabilityEntryDto.getTrainId()).get();
-        int totalSeats = train.getNoOfSeats();
+        int totalNumberOfSeatsInTrain = train.getNoOfSeats();
 
-        List<Ticket> BookedTickets = train.getBookedTickets();
+        int bookedSeatsByPassenger = 0;
+        List<Ticket> ticketList = train.getBookedTickets();
+        for(Ticket ticket : ticketList) {
+            bookedSeatsByPassenger += ticket.getPassengersList().size();
+        }
+
 
         String fromStation = seatAvailabilityEntryDto.getFromStation().toString();
         String toStation = seatAvailabilityEntryDto.getToStation().toString();
 
-        int availableBetStations = 0;
+        int passengerLeave = 0;
 
-        for(Ticket ticket : BookedTickets){
-            if(ticket.getToStation().toString().equals(fromStation)){
-                availableBetStations += ticket.getPassengersList().size();
+        for(Ticket ticket : ticketList) {
+//            if(ticket.getToStation().toString().equals(fromStation)){
+//                passengerLeave += ticket.getPassengersList().size();
+//            }
+//            if(ticket.getFromStation().toString().equals(toStation)){
+//                passengerLeave += ticket.getPassengersList().size();
+//            }
+            if (ticket.getFromStation().equals(seatAvailabilityEntryDto.getToStation())) {
+                passengerLeave += ticket.getPassengersList().size();
             }
-            if(ticket.getFromStation().toString().equals(toStation)){
-                availableBetStations += ticket.getPassengersList().size();
+            if (ticket.getToStation().equals(seatAvailabilityEntryDto.getFromStation())) {
+                passengerLeave += ticket.getPassengersList().size();
             }
         }
 
-        int totalpassengers = 0;
-        for(Ticket ticket : BookedTickets){
-            totalpassengers += ticket.getPassengersList().size();
-        }
-
-
-        int SeatsNotAvailable = totalpassengers - availableBetStations;
-        availableSeats = totalSeats-SeatsNotAvailable;
+        int availableSeats;
+        int availablePassengerOnTrain = bookedSeatsByPassenger - passengerLeave;
+        availableSeats = totalNumberOfSeatsInTrain-availablePassengerOnTrain;
 
         return availableSeats;
     }
