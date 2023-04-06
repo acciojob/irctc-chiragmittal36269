@@ -93,9 +93,9 @@ public class TicketService {
 
         // object
         train.getBookedTickets().add(ticket);
-        train.setNoOfSeats(train.getNoOfSeats() - numberOfSeatsWantToBook);
-
-        trainRepository.save(train);
+//        train.setNoOfSeats(train.getNoOfSeats() - numberOfSeatsWantToBook);
+//
+//        trainRepository.save(train);
         Ticket updatedTicket = ticketRepository.save(ticket);
 
         return updatedTicket.getTicketId();
